@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>포트폴리오</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --radius: 10px;
+    }
+
+    [data-theme="dark"] {
+      --bg:        #0d1117;
+      --surface:   #161b22;
+      --border:    #30363d;
+      --accent:    #58a6ff;
+      --accent-dim:#1f6feb;
+      --text:      #e6edf3;
+      --muted:     #8b949e;
+    }
+
+    [data-theme="light"] {
+      --bg:        #f6f8fa;
+      --surface:   #ffffff;
+      --border:    #d0d7de;
+      --accent:    #0969da;
+      --accent-dim:#54aeff;
+      --text:      #1f2328;
+      --muted:     #656d76;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    section { padding: 80px 24px; }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 40px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 17, 23, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+    }
+
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .theme-toggle:hover {
+      background: var(--surface);
+      border-color: var(--accent);
+    }
+
+    /* ── Hero ── */
+    #hero {
+      min-height: calc(100vh - 53px);
+      display: flex;
+      align-items: center;
+      padding-top: 100px;
+      padding-bottom: 100px;
+      text-align: center;
+    }
+
+    .hero-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .avatar svg {
+      width: 64px;
+      height: 64px;
+      fill: var(--border);
+    }
+
+    .hero-name {
+      font-size: clamp(2.5rem, 6vw, 3.8rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    .hero-name span { color: var(--accent); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: #a0aab4;
+      max-width: 480px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 26px;
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0d1117;
+    }
+
+    .btn-primary:hover {
+      background: #79b8ff;
+      text-decoration: none;
+      transform: translateY(-2px);
+    }
+
+    /* ── Skills ── */
+    #skills { background: var(--surface); }
+
+    .badge-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .badge {
+      padding: 6px 18px;
+      border: 1px solid var(--accent-dim);
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: rgba(31, 111, 235, 0.1);
+      transition: background 0.2s, transform 0.15s;
+      cursor: default;
+    }
+
+    .badge:hover {
+      background: rgba(88, 166, 255, 0.18);
+      transform: translateY(-2px);
+    }
+
+    /* ── Projects ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      flex: 1;
+    }
+
+    .card-link {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: auto;
+    }
+
+    .card-link::after { content: " →"; }
+
+    .card-link:hover { text-decoration: none; opacity: 0.85; }
+
+    /* ── Contact ── */
+    #contact {
+      background: var(--surface);
+      text-align: center;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .contact-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .contact-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    footer {
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 720px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .nav-links { gap: 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links { display: none; }
+      section { padding: 60px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-inner">
+      <span class="nav-logo">YourName.dev</span>
+      <ul class="nav-links">
+        <li><a href="#skills">기술 스택</a></li>
+        <li><a href="#projects">프로젝트</a></li>
+        <li><a href="#contact">연락처</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="테마 전환">🌙</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="container hero-inner">
+      <div class="avatar" aria-label="프로필 이미지 자리">
+        <!-- 실제 이미지 사용 시: <img src="profile.jpg" alt="프로필"> -->
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+        </svg>
+      </div>
+      <h1 class="hero-name">안녕하세요, <span>홍길동</span>입니다.</h1>
+      <p class="hero-sub">사용자 중심의 인터페이스를 만드는 프론트엔드 개발자입니다.</p>
+      <a href="#projects" class="btn btn-primary">프로젝트 보기</a>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <div class="container">
+      <h2 class="section-title">기술 스택</h2>
+      <div class="badge-list">
+        <span class="badge">HTML / CSS</span>
+        <span class="badge">JavaScript</span>
+        <span class="badge">React</span>
+        <span class="badge">Python</span>
+        <span class="badge">Git</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <div class="container">
+      <h2 class="section-title">프로젝트</h2>
+      <div class="card-grid">
+
+        <div class="card">
+          <div class="card-title">프로젝트 제목 1</div>
+          <p class="card-desc">React와 REST API를 활용해 만든 날씨 대시보드 앱입니다. 위치 기반 실시간 데이터를 시각화합니다.</p>
+          <a href="#" class="card-link">자세히 보기</a>
+        </div>
+
+        <div class="card">
+          <div class="card-title">프로젝트 제목 2</div>
+          <p class="card-desc">Python Flask로 구축한 개인 블로그 플랫폼입니다. 마크다운 에디터와 태그 필터링 기능을 포함합니다.</p>
+          <a href="#" class="card-link">자세히 보기</a>
+        </div>
+
+        <div class="card">
+          <div class="card-title">프로젝트 제목 3</div>
+          <p class="card-desc">순수 JS로 구현한 투두 앱으로 드래그 앤 드롭 정렬과 로컬스토리지 영속성을 지원합니다.</p>
+          <a href="#" class="card-link">자세히 보기</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title">연락처</h2>
+      <div class="contact-links">
+        <div class="contact-item">
+          <span class="contact-label">Email</span>
+          <a href="mailto:your@email.com" class="contact-value">your@email.com</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">GitHub</span>
+          <a href="https://github.com/yourusername" target="_blank" rel="noopener" class="contact-value">github.com/yourusername</a>
+        </div>
+      </div>
+      <footer>
+        <p>© 2026 홍길동. All rights reserved.</p>
+      </footer>
+    </div>
+  </section>
+
+
+  <script>
+    const html   = document.documentElement;
+    const btn    = document.getElementById('themeToggle');
+    const EMOJI  = { dark: '🌙', light: '☀️' };
+
+    function applyTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      btn.textContent = EMOJI[theme];
+      localStorage.setItem('theme', theme);
+    }
+
+    // 저장된 테마 복원 (없으면 dark 기본)
+    applyTheme(localStorage.getItem('theme') || 'dark');
+
+    btn.addEventListener('click', () => {
+      applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+  </script>
+</body>
+</html>
