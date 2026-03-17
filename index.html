@@ -111,6 +111,7 @@
 
       <footer>
         <p>© 2026 홍길동. All rights reserved.</p>
+        <p class="visitor-count">이 페이지를 <span id="visitorCount">0</span>명이 방문했습니다.</p>
       </footer>
     </div>
   </section>
@@ -129,6 +130,11 @@
 
     // 저장된 테마 복원 (없으면 dark 기본)
     applyTheme(localStorage.getItem('theme') || 'dark');
+
+    // 방문자 카운터
+    const count = Number(localStorage.getItem('visitorCount') || 0) + 1;
+    localStorage.setItem('visitorCount', count);
+    document.getElementById('visitorCount').textContent = count;
 
     btn.addEventListener('click', () => {
       applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
